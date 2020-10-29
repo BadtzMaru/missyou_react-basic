@@ -6,9 +6,9 @@ import Person from './Person/Person';
 class App extends Component {
 	state = {
 		persons: [
-			{ name: '张三', count: 10 },
-			{ name: '李四', count: 20 },
-			{ name: '王五', count: 30 },
+			{ id: 1, name: '张三', count: 10 },
+			{ id: 2, name: '李四', count: 20 },
+			{ id: 3, name: '王五', count: 30 },
 		],
 		otherState: 'anything',
 		showPersons: false,
@@ -20,18 +20,24 @@ class App extends Component {
 			persons,
 		});
 	};
-	nameChangeHandler = (event) => {
+	nameChangeHandler = (event, id) => {
 		const persons = [...this.state.persons];
-		persons[0].name = event.target.value;
-		this.setState({
-			persons,
-		});
+		const personIndex = persons.findIndex((p) => p.id === id);
+		const person = { ...persons[personIndex] };
+		person.name = event.target.value;
+		persons[personIndex] = person;
+		this.setState({ persons });
 	};
 	togglePersonsHandle = () => {
 		const doesShow = this.state.showPersons;
 		this.setState({
 			showPersons: !doesShow,
 		});
+	};
+	deletePersonHandler = (index) => {
+		const persons = [...this.state.persons];
+		persons.splice(index, 1);
+		this.setState({ persons });
 	};
 	render() {
 		const style = {
@@ -46,24 +52,17 @@ class App extends Component {
 		if (this.state.showPersons) {
 			persons = (
 				<div>
-					<Person
-						myclick={this.switchNameHandler.bind(this, '米修missu')}
-						changed={this.nameChangeHandler}
-						name={this.state.persons[0].name}
-						count={this.state.persons[0].count}
-					/>
-					<Person
-						changed={this.nameChangeHandler}
-						name={this.state.persons[1].name}
-						count={this.state.persons[1].count}
-					/>
-					<Person
-						changed={this.nameChangeHandler}
-						name={this.state.persons[2].name}
-						count={this.state.persons[2].count}
-					>
-						{this.state.otherState}
-					</Person>
+					{this.state.persons.map((item, index) => (
+						<Person
+							key={item.id}
+							myclick={() => this.deletePersonHandler(index)}
+							changed={(event) =>
+								this.nameChangeHandler(event, item.id)
+							}
+							name={item.name}
+							count={item.count}
+						/>
+					))}
 				</div>
 			);
 		}
