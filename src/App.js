@@ -41,7 +41,8 @@ class App extends Component {
 	};
 	render() {
 		const style = {
-			backgroundColor: 'white',
+			color: 'white',
+			backgroundColor: 'green',
 			font: 'inherit',
 			border: '1px solid blue',
 			padding: '8px',
@@ -65,11 +66,21 @@ class App extends Component {
 					))}
 				</div>
 			);
+			style.backgroundColor = 'red';
 		}
+		// const classes = ['red', 'bold'].join(' ');
+		const classes = [];
+		if (this.state.persons.length <= 2) {
+			classes.push('red');
+		}
+		if (this.state.persons.length <= 1) {
+			classes.push('bold');
+		}
+
 		return (
 			<div className='App'>
 				<h1>Hello World</h1>
-				<p>Hi, React App</p>
+				<p className={classes.join(' ')}>Hi, React App</p>
 				<button
 					onClick={() => this.switchNameHandler('arrow')}
 					style={style}
