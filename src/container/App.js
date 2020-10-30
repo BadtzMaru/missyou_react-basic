@@ -6,15 +6,29 @@ import Persons from '../components/Persons/Persons';
 
 // 有状态组件
 class App extends Component {
-	state = {
-		persons: [
-			{ id: 1, name: '张三', count: 10 },
-			{ id: 2, name: '李四', count: 20 },
-			{ id: 3, name: '王五', count: 30 },
-		],
-		otherState: 'anything',
-		showPersons: false,
-	};
+	constructor(props) {
+		super(props);
+		console.log('[App.js] constructor is running...');
+		/*
+			state: 用于改变组件内容状态的值
+			props: 用于组件通信进行传值
+		*/
+		this.state = {
+			persons: [
+				{ id: 1, name: '张三', count: 10 },
+				{ id: 2, name: '李四', count: 20 },
+				{ id: 3, name: '王五', count: 30 },
+			],
+			otherState: 'anything',
+			showPersons: false,
+		};
+	}
+	componentWillMount() {
+		console.log('[App.js] componentWillMount is running...');
+	}
+	componentDidMount() {
+		console.log('[App.js] componentDidMount is running...');
+	}
 	switchNameHandler = (newName) => {
 		const persons = [...this.state.persons];
 		persons[0].name = newName;
@@ -42,6 +56,7 @@ class App extends Component {
 		this.setState({ persons });
 	};
 	render() {
+		console.log('[App.js] render is running...');
 		let persons = null;
 		if (this.state.showPersons) {
 			persons = (
